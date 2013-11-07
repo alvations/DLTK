@@ -5,6 +5,7 @@ import codecs, re, os, tempfile
 import cPickle as pickle
 from nltk.tokenize.punkt import PunktTrainer, \
 PunktSentenceTokenizer,PunktParameters
+from nltk.tokenize import word_tokenize
 
 DEUPUNCT = u""",–−—’‘‚”“‟„! £"%$'&)(+*-€/.±°´·¸;:=<?>@§#¡•[˚]»_^`≤…\«¿¨{}|"""
 
@@ -55,18 +56,18 @@ def train_punktsent(trainfile, modelfile):
 def deupunkt_tokenize(text):
   """ Modifying the unsupervised punkt algorithm in NLTK for German. """
   try:
-    with open('1000deu.pickle', mode='rb') as fin:
+    with open('deuroparl.pickle', mode='rb') as fin:
       sent_tokenizer = pickle.load(fin)
     # Adds DEUPUNCT from global variable. 
     sent_tokenizer.PUNCTUATION+=tuple(DEUPUNCT)
   except(IOError, pickle.UnpicklingError):
     sent_tokenizer = text.split("\n") # Backoff with "\n" as delimiter
-  return [i.split() for i in sent_tokenizer.tokenize(text)]
+  return [word_tokenize(i) for i in sent_tokenizer.tokenize(text)]
   
 sent = u"""„Frau Präsidentin! Ist meine Stimme mitgezählt worden?""" 
 sent+=u"""Of course this a.M., it is Bros.“"""
 
-train_punktsent('1000.de','1000deu.pickle')
+train_punktsent('europarl-v7.de-en.de','deuroparl.pickle')
 
 print koehn_tokenize(sent)
 print rb_tokenize(sent)
