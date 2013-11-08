@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import sys; reload(sys); sys.setdefaultencoding("utf-8")
-import codecs, re, os, tempfile
+import codecs, re, os
 import cPickle as pickle
 from nltk.tokenize.punkt import PunktTrainer, \
 PunktSentenceTokenizer,PunktParameters
@@ -27,6 +27,7 @@ def rb_tokenize(text): # Source: http://goo.gl/sF5WA5
         [i.strip() for i in codecs.open("/tmp/tmp.out","r","utf8").readlines()]]
 
 def koehn_tokenize(text):
+  """ Europarl v7 tokenizer tool from Philip Koehn"""
   txt2tmp(text)
   os.system("perl koehn_senttokenize.pl -l de < /tmp/tmp.in > /tmp/tmp.out")
   os.system("perl koehn_wordtokenize.pl -l de < /tmp/tmp.out > /tmp/tmp.in")
@@ -63,7 +64,8 @@ def deupunkt_tokenize(text):
   except(IOError, pickle.UnpicklingError):
     sent_tokenizer = text.split("\n") # Backoff with "\n" as delimiter
   return [word_tokenize(i) for i in sent_tokenizer.tokenize(text)]
-  
+
+'''  
 sent = u"""„Frau Präsidentin! Ist meine Stimme mitgezählt worden?""" 
 sent+=u"""Of course this a.M., it is Bros.“"""
 
@@ -74,3 +76,4 @@ print rb_tokenize(sent)
 print punct_tokenize(sent)
 print deupunkt_tokenize(sent)
 print 
+'''
