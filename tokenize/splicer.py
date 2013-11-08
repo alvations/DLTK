@@ -28,17 +28,3 @@ def smor(text):
   return [i.strip() for i in \
           codecs.open("/tmp/tmp.out","r","utf8").readlines()[3:]]
   
-'''    
-sentence = u"Ich werde SchwangerShaft, Erhebungsfehler und Hörspielabteilung haben."
-#sentence = u"Erhebungsfehler"
-sentence = u"Unternehmenskaufverträge"
-sentence = u"Industriebeteiligungverwaltunggesellschaft"
-
-print jwordsplitter(sentence)
-
-sentence = u"Unternehmenskaufverträge"
-print bananasplit(sentence)
-
-sentence = u"Erhebungsfehler"
-print smor(sentence)
-'''

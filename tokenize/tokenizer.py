@@ -54,10 +54,12 @@ def train_punktsent(trainfile, modelfile):
     pickle.dump(model, fout, protocol=pickle.HIGHEST_PROTOCOL)
   return model
    
-def deupunkt_tokenize(text):
+def deupunkt_tokenize(text,modelfile=None):
   """ Modifying the unsupervised punkt algorithm in NLTK for German. """
+  if modelfile == None:
+    modelfile = 'deuroparl.pickle'
   try:
-    with open('deuroparl.pickle', mode='rb') as fin:
+    with open(modelfile, mode='rb') as fin:
       sent_tokenizer = pickle.load(fin)
     # Adds DEUPUNCT from global variable. 
     sent_tokenizer.PUNCTUATION+=tuple(DEUPUNCT)
@@ -65,15 +67,32 @@ def deupunkt_tokenize(text):
     sent_tokenizer = text.split("\n") # Backoff with "\n" as delimiter
   return [word_tokenize(i) for i in sent_tokenizer.tokenize(text)]
 
-'''  
+'''
 sent = u"""„Frau Präsidentin! Ist meine Stimme mitgezählt worden?""" 
 sent+=u"""Of course this a.M., it is Bros.“"""
+sent = u"""Betrachten wir z.B. die Automobilindustrie, wo die Subventionen und verschiedenen staatlichen Beihilfen während des Berichtszeitraums um 24% gestiegen sind.
+Zu welchem Zweck?"""
 
-train_punktsent('europarl-v7.de-en.de','deuroparl.pickle')
+#train_punktsent('europarl-v7.de-en.de','deuroparl.pickle')
+#train_punktsent('deu1000', 'deu1000.pickle')
+print deupunkt_tokenize(sent, 'deu1000.pickle')
+for i in deupunkt_tokenize(sent, 'deu1000.pickle'):
+  print " ".join(i)
+print
 
 print koehn_tokenize(sent)
+for i in koehn_tokenize(sent):
+  print " ".join(i)
+print
+
 print rb_tokenize(sent)
+for i in rb_tokenize(sent):
+  print " ".join(i)
+print
+
 print punct_tokenize(sent)
-print deupunkt_tokenize(sent)
-print 
+for i in punct_tokenize(sent):
+  print " ".join(i)
+
+
 '''
