@@ -27,4 +27,3 @@ def smor(text):
   os.system("smor < /tmp/tmp.in > /tmp/tmp.out")
   return [i.strip() for i in \
           codecs.open("/tmp/tmp.out","r","utf8").readlines()[3:]]
-  

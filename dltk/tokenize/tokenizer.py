@@ -93,6 +93,4 @@ print
 print punct_tokenize(sent)
 for i in punct_tokenize(sent):
   print " ".join(i)
-
-
 '''
