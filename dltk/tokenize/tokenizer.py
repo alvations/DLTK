@@ -26,16 +26,20 @@ def rb_tokenize(text): # Source: http://goo.gl/sF5WA5
   return [j.split() for j in \
         [i.strip() for i in codecs.open("/tmp/tmp.out","r","utf8").readlines()]]
 
-def koehn_tokenize(text):
+def koehn_tokenize(text, lang='de'):
   """ Europarl v7 tokenizer tool from Philip Koehn"""
   txt2tmp(text)
-  os.system("perl koehn_senttokenize.pl -l de < /tmp/tmp.in > /tmp/tmp.out")
-  os.system("perl koehn_wordtokenize.pl -l de < /tmp/tmp.out > /tmp/tmp.in")
+  os.system("perl koehn_senttokenize.pl -l "+lang+" < /tmp/tmp.in > /tmp/tmp.out")
+  os.system("perl koehn_wordtokenize.pl -l "+lang+" < /tmp/tmp.out > /tmp/tmp.in")
   return [j.split() for j in \
         [i.strip() for i in codecs.open("/tmp/tmp.in","r","utf8").readlines()]]
     
 def train_punktsent(trainfile, modelfile):
-  """ Trains an unsupervised NLTK punkt sentence tokenizer. """
+  """ 
+  Trains an unsupervised NLTK punkt SENTENCE tokenizer. 
+  *trainfile* is the filename for the input file. s
+  *modelfile* is the filename for the model output file.
+  """
   punkt = PunktTrainer()
   try:
     with codecs.open(trainfile, 'r','utf8') as fin:
